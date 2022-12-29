@@ -67,6 +67,7 @@ bus.add_signal_receiver(cups_notification_handler, signal_name="PrinterStateChan
 
 class PrinterDriver(Driver):
     connection_type = 'printer'
+    debug = False
 
     def __init__(self, identifier, device):
         super(PrinterDriver, self).__init__(identifier, device)
@@ -81,7 +82,7 @@ class PrinterDriver(Driver):
         self.send_status()
 
         self.receipt_protocol = 'star' if 'STR_T' in device['device-id'] else 'escpos'
-        if 'direct' in self.device_connection and any(cmd in device['device-id'] for cmd in ['CMD:STAR;', 'CMD:ESC/POS;']):
+        if self.debug and 'direct' in self.device_connection and any(cmd in device['device-id'] for cmd in ['CMD:STAR;', 'CMD:ESC/POS;']):
             self.print_status()
 
     @classmethod
