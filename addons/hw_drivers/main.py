@@ -72,8 +72,11 @@ class Manager(Thread):
         Thread that will load interfaces and drivers and contact the odoo server with the updates
         """
 
-        #helpers.check_git_branch()
-        #helpers.check_certificate()
+        # helpers.check_git_branch()
+        is_certificate_ok, certificate_details = helpers.get_certificate_status()
+        if not is_certificate_ok:
+            _logger.warning("An error happened when trying to get the HTTPS certificate: %s",
+                            certificate_details)
 
         # We first add the IoT Box to the connected DB because IoT handlers cannot be downloaded if
         # the identifier of the Box is not found in the DB. So add the Box to the DB.
